@@ -16,7 +16,7 @@ min_people_on_floor = 30
 max_people_on_floor = 50
 capacity = 4
 
-# queues
+# init
 queues = []
 for i in range(floors + 1):
     floor = []
