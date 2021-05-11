@@ -103,8 +103,6 @@ class Inspector:
     rules = {}
 
     def receive_bulletin(self, bulletin: str):
-        print(f'Bulletin: {bulletin}')
-
         sentences = bulletin.lower().split('\n')
         for sentence in sentences:
             action, rule = self.parse_sentence(sentence)
@@ -188,8 +186,6 @@ class Inspector:
             self.rules[to_change].pop(item)
 
     def inspect(self, person: dict) -> str:
-        print(f'Person: {person}')
-
         try:
             attrs = self.parse_person(person)
         except Denied as e:
