@@ -4,11 +4,15 @@ import time
 from decimal import Decimal
 
 from papers import Inspector as MarcinInspector
+from papers_magda import Inspector as MagdaInspector
+from papers_janek import Inspector as JanekInspector
 
 
 # players
 player_inspectors = {
     "Marcin": MarcinInspector,
+    "Magda": MagdaInspector,
+    "Janek": JanekInspector,
 }
 
 # configuration
@@ -23,9 +27,9 @@ Foreigners require access permit
 Entrants require measles vaccination
 Entrants no longer require measles vaccination'''] * bulletin_multiplier) + (
     '''\nAllow citizens of Arstotzka
-    Deny citizens of Obristan
-    Allow citizens of Obristan
-    Entrants require measles vaccination'''
+Deny citizens of Obristan
+Allow citizens of Obristan
+Entrants require measles vaccination'''
 )
 
 persons = [
@@ -33,7 +37,7 @@ persons = [
         'passport': 'ID#: PD8LK-9YIE8\nNATION: Obristan\nNAME: Andrevska, Gunther\nDOB: 1968.08.29\nSEX: M\nISS: Bostan\nEXP: 1984.08.05',
         'certificate_of_vaccination': f'NAME: Andrevska, Gunther\nID#: PD8LK-9YIE8\nVACCINES: {"measles, " if i % 2 == 0 else ""}tetanus, rubella, typhus, cholera',
         'access_permit': 'NAME: Andrevska, Gunther\nNATION: Obristan\nID#: PD8LK-9YIE8\nPURPOSE: WORK\nDURATION: 3 MONTHS\nHEIGHT: 152cm\nWEIGHT: 115kg\nEXP: 1992.05.08',
-        'work_pass': '\n'.join([f'{random.choice(string.ascii_uppercase)}: {string.ascii_lowercase}' for _ in range(work_pass_multiplier)])
+        'work_pass': 'NAME: Andrevska, Gunther\n' + '\n'.join([f'{random.choice(string.ascii_uppercase)}: {string.ascii_lowercase}' for _ in range(work_pass_multiplier)])
     } for i in range(persons_multiplier)
 ]
 
