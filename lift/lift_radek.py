@@ -1,5 +1,3 @@
-from operator import gt, lt
-from copy import copy
 from typing import List, Dict
 import enum
 
@@ -20,13 +18,6 @@ class Direction(enum.IntEnum):
 
     def reverse(self):
         return Direction(self.value * -1)
-
-    @property
-    def operator(self):
-        return {
-            Direction.UP: gt,
-            Direction.DOWN: lt,
-        }[self]
 
     @property
     def get_nearest(self):
@@ -57,15 +48,16 @@ class Lift:
     direction: Direction = None
 
     def __init__(self, queues, capacity):
-        self.commands = [
-            {
-                Direction.UP: [p for p in queue if p > floor],
-                Direction.DOWN: [p for p in queue if p < floor]
-            } for floor, queue in enumerate(queues)
-        ]
+        self.commands = [{Direction.UP: [], Direction.DOWN: []} for _ in queues]
+        for floor, queue in enumerate(queues):
+            for p in queue:
+                if p > floor:
+                    self.commands[floor][Direction.UP].append(p)
+                else:
+                    self.commands[floor][Direction.DOWN].append(p)
         self.capacity = capacity
         self.current_floor = 0
-        self.visited_floors = []
+        self.visited_floors = [0]
         self.passengers = list()
         self.direction = Direction.UP
 
@@ -87,37 +79,31 @@ class Lift:
         return len(self.passengers) == 0
 
     def run(self):
-        while True:
-            if not self.visited_floors:
-                self.visited_floors.append(self.current_floor)
-            elif self.visited_floors[-1] != self.current_floor:
-                self.visited_floors.append(self.current_floor)
-            if self.finished:
-                break
-            passengers_on_arrival = copy(self.passengers)
+        while not self.finished:
             try:
                 self.let_passengers_out(self.current_floor)
             except InvalidFloor:
-                print(f"noone leaving at {self.current_floor}")
+                pass
+
             try:
                 self.get_passengers_in(self.current_floor)
             except InvalidFloor:
-                print(f"noone to pick up at {self.current_floor}")
+                pass
             except LiftFull:
-                print(f"lift full, can not pick up from {self.current_floor}")
+                pass
 
             try:
                 self.move()
             except InvalidMove:
                 self.change_direction()
-                print(f"no next stop, changing direction, going {self.direction.name}")
                 continue
-        try:
-            if self.visited_floors[-1] != 0:
-                self.visited_floors.append(0)
-            return self.visited_floors
-        except IndexError:
-            return [0]
+
+            if self.visited_floors[-1] != self.current_floor:
+                self.visited_floors.append(self.current_floor)
+
+        if self.visited_floors[-1] != 0:
+            self.visited_floors.append(0)
+        return self.visited_floors
 
     def move(self):
         next_stop = self.next_stop()
@@ -126,19 +112,21 @@ class Lift:
         self.current_floor = next_stop
 
     def next_stop(self):
-        opr = self.direction.operator
         get_nearest = self.direction.get_nearest
 
         if self.direction is Direction.UP:
             possible_passengers = [
                 i
-                for i, commands in enumerate(self.commands[self.current_floor + 1:], start=self.current_floor + 1)
+                for i, commands in enumerate(
+                    self.commands[self.current_floor + 1:],
+                    start=self.current_floor + 1,
+                )
                 if commands[self.direction]
             ]
         else:
             possible_passengers = [
                 i
-                for i, commands in enumerate(self.commands[:self.current_floor])
+                for i, commands in enumerate(self.commands[: self.current_floor])
                 if commands[self.direction]
             ]
         possible_passengers = possible_passengers or []
@@ -150,12 +138,14 @@ class Lift:
                 return possible_passengers[0]
         if self.is_empty:
             if self.direction is Direction.UP:
-                for i, commands in enumerate(self.commands[self.current_floor + 1:][::-1], start=1):
+                for i, commands in enumerate(
+                    self.commands[self.current_floor + 1:][::-1], start=1
+                ):
                     if commands[self.direction.reverse()]:
                         self.change_direction()
                         return len(self.commands) - i
             else:
-                for i, commands in enumerate(self.commands[:self.current_floor]):
+                for i, commands in enumerate(self.commands[: self.current_floor]):
                     if commands[self.direction.reverse()]:
                         self.change_direction()
                         return i
@@ -170,7 +160,6 @@ class Lift:
         self.passengers = [p for p in self.passengers if p != floor]
 
     def get_passengers_in(self, floor: int):
-        opr = self.direction.operator
         waiting = self.commands[floor][self.direction]
         if not waiting:
             raise InvalidFloor("no one to pick up")
@@ -178,7 +167,9 @@ class Lift:
         if capacity == 0:
             raise LiftFull()
         new_passengers = self.commands[floor][self.direction][:capacity]
-        self.commands[floor][self.direction] = self.commands[floor][self.direction][capacity:]
+        self.commands[floor][self.direction] = self.commands[floor][self.direction][
+            capacity:
+        ]
         self.passengers.extend(new_passengers)
 
     def change_direction(self):
