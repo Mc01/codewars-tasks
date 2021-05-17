@@ -8,23 +8,25 @@ from lift_magda import Dinglemouse as MagdaLift
 from lift_piter import Dinglemouse as PiterLift
 from lift_radek import Dinglemouse as RadekLift
 from lift_akcelero import Dinglemouse as AkceleroLift
+from lift_ania import Dinglemouse as AniaLift
 
 
 # players
 player_lifts = {
     "Marcin": MarcinLift,
     "Janek": JanekLift,
-    "Magda": MagdaLift,
+    # "Magda": MagdaLift,
     # "Piter": PiterLift,
     "Radek": RadekLift,
     "Akcelero": AkceleroLift,
+    # "Ania": AniaLift,
 }
 
 # configuration
-floors = 500
-min_people_on_floor = 0
-max_people_on_floor = 15
-capacity = 4
+floors = 400
+min_people_on_floor = 10
+max_people_on_floor = 50
+capacity = 9
 
 # init
 queues = []
@@ -72,3 +74,4 @@ if len(grouped_answers.keys()) == 1:
 else:
     for i, owners in enumerate(grouped_answers.values()):
         print(f"Players with solution number {i + 1}: {owners}")
+        # print(f"Solution: {list(grouped_answers.keys())[i]}")
