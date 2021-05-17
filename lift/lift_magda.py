@@ -36,10 +36,7 @@ class Dinglemouse(object):
                 people_getting_off.append(person)
             else:
                 people_staying.append(person)
-        print("----")
-        print(self.current_stop)
 
-        print(self.queues)
         self.queues[self.current_stop] += people_getting_off
         self.people_inside = people_staying
 

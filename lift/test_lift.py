@@ -15,15 +15,15 @@ player_lifts = {
     "Marcin": MarcinLift,
     "Janek": JanekLift,
     "Magda": MagdaLift,
-    "Piter": PiterLift,
+    # "Piter": PiterLift,
     "Radek": RadekLift,
     "Akcelero": AkceleroLift,
 }
 
 # configuration
-floors = 30
-min_people_on_floor = 3
-max_people_on_floor = 5
+floors = 500
+min_people_on_floor = 0
+max_people_on_floor = 15
 capacity = 4
 
 # init
@@ -33,7 +33,9 @@ for i in range(floors + 1):
 
     number_of_people = randint(min_people_on_floor, max_people_on_floor)
     for person in range(number_of_people):
-        floor.append(randint(0, floors))
+        random_number = randint(0, floors)
+        if random_number != i:
+            floor.append(random_number)
 
     queues.append(tuple(floor))
 
