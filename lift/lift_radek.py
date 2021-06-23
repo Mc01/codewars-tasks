@@ -53,7 +53,7 @@ class Lift:
             for p in queue:
                 if p > floor:
                     self.commands[floor][Direction.UP].append(p)
-                else:
+                elif p < floor:
                     self.commands[floor][Direction.DOWN].append(p)
         self.capacity = capacity
         self.current_floor = 0
@@ -115,31 +115,35 @@ class Lift:
         get_nearest = self.direction.get_nearest
 
         if self.direction is Direction.UP:
-            possible_passengers = [
-                i
-                for i, commands in enumerate(
-                    self.commands[self.current_floor + 1:],
-                    start=self.current_floor + 1,
+            try:
+                possible_stop = next(
+                    i
+                    for i, commands in enumerate(
+                        self.commands[self.current_floor + 1 :],
+                        start=self.current_floor + 1,
+                    )
+                    if commands[self.direction]
                 )
-                if commands[self.direction]
-            ]
+            except StopIteration:
+                possible_stop = None
         else:
-            possible_passengers = [
-                i
-                for i, commands in enumerate(self.commands[: self.current_floor])
-                if commands[self.direction]
-            ]
-        possible_passengers = possible_passengers or []
-        possible_passengers.extend(self.passengers)
-        if possible_passengers:
-            if len(possible_passengers) > 1:
-                return get_nearest(*possible_passengers)
-            else:
-                return possible_passengers[0]
+            try:
+                possible_stop = next(
+                    self.current_floor - i
+                    for i, commands in enumerate(
+                        self.commands[: self.current_floor][::-1], start=1
+                    )
+                    if commands[self.direction]
+                )
+            except StopIteration:
+                possible_stop = None
+
         if self.is_empty:
+            if possible_stop:
+                return possible_stop
             if self.direction is Direction.UP:
                 for i, commands in enumerate(
-                    self.commands[self.current_floor + 1:][::-1], start=1
+                    self.commands[self.current_floor + 1 :][::-1], start=1
                 ):
                     if commands[self.direction.reverse()]:
                         self.change_direction()
@@ -149,6 +153,11 @@ class Lift:
                     if commands[self.direction.reverse()]:
                         self.change_direction()
                         return i
+        elif possible_stop:
+            return get_nearest(*[possible_stop, *self.passengers])
+        else:
+            return get_nearest(self.passengers)
+
         if self.finished:
             return 0
         else:
