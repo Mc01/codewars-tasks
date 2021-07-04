@@ -6,16 +6,12 @@ factor_cache = {}
 dot_cache = {}
 
 
-def factor(value: int):
-    if not factor_cache.get(value):
-        factor_cache[value] = factorial(value)
-    return factor_cache[value]
-
-
-def dot(values: tuple):
-    if not dot_cache.get(values):
-        dot_cache[values] = prod(values)
-    return dot_cache[values]
+def factor(v: int):
+    try:
+        return factor_cache[v]
+    except KeyError:
+        factor_cache[v] = factorial(v)
+        return factor_cache[v]
 
 
 def listPosition(word):
@@ -25,21 +21,21 @@ def listPosition(word):
     for position in word:
         previous = None
 
+        non_unique_combinations = factor(len(alphabet) - 1)
+        duplicates = Counter(alphabet).values()
+
         for j, letter in enumerate(alphabet):
-            if alphabet[j] == previous:
+            if letter == previous:
                 continue
             elif letter < position:
-                available = alphabet[:j] + alphabet[j + 1:]
-                duplicates = Counter(available)
-
-                non_unique_combinations = factor(len(available))
-                duplicated_combinations = dot(
-                    tuple(factor(v) for v in duplicates.values())
+                duplicated_combinations = prod(
+                    factor(
+                        v if v != letter else v - 1
+                    ) for v in duplicates
                 )
-                unique_combinations = non_unique_combinations // duplicated_combinations
 
-                combinations += unique_combinations
-                previous = alphabet[j]
+                combinations += non_unique_combinations // duplicated_combinations
+                previous = letter
             else:
                 alphabet.pop(j)
                 break
@@ -56,7 +52,7 @@ if __name__ == '__main__':
         'QUESTION': 24572,
         'BOOKKEEPER': 10743,
         'IMMUNOELECTROPHORETICALLY': 718393983731145698173,
-        'DCCBBAA': 629,
+        'DCCBBAA': 630,
         'TOFFEE': 180,
     }
     for word, value in testValues.items():

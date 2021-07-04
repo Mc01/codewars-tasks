@@ -24,7 +24,7 @@ length = 1000
 repetitions_occurrence_percent = 15
 min_repetitions = 3
 max_repetitions = 15
-word_count = 3
+word_count = 1
 words = []
 
 # init
