@@ -4,18 +4,21 @@ from random import randint, choice
 from string import ascii_letters, digits
 
 from anagram import listPosition as MarcinAnagram
+from anagram_akcelero import listPosition as AkceleroAnagram
+from anagram_ania import listPosition as AniaAnagram
+from anagram_radek import listPosition as RadekAnagram
 
 
 # players
 players = {
     "Marcin": MarcinAnagram,
-    # "Akcelero": AkceleroAnagram,
-    # "Ania": AniaAnagram,
+    "Akcelero": AkceleroAnagram,
+    "Ania": AniaAnagram,
     # "Janek": JanekAnagram,
     # "Magda": MagdaAnagram,
     # "Michal": MichalAnagram,
     # "Piter": PiterAnagram,
-    # "Radek": RadekAnagram,
+    "Radek": RadekAnagram,
 }
 
 # configuration
@@ -85,4 +88,4 @@ if len(grouped_answers.keys()) == len(words):
 else:
     for i, owners in enumerate(grouped_answers.values()):
         print(f"Players with similar solutions - group {i + 1}: {owners}")
-        # print(f"Solution: {list(grouped_answers.keys())[i]}")
+        print(f"Solution: {list(grouped_answers.keys())[i]}")
