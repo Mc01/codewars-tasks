@@ -3,7 +3,6 @@ from math import factorial, prod
 
 
 factor_cache = {}
-dot_cache = {}
 
 
 def factor(v: int):
@@ -21,18 +20,17 @@ def listPosition(word):
     for position in word:
         previous = None
 
-        non_unique_combinations = factor(len(alphabet) - 1)
-        duplicates = Counter(alphabet).values()
-
         for j, letter in enumerate(alphabet):
             if letter == previous:
                 continue
             elif letter < position:
-                duplicated_combinations = prod(
-                    factor(
-                        v if v != letter else v - 1
-                    ) for v in duplicates
-                )
+                available = alphabet[:j] + alphabet[j + 1:]
+                duplicates = Counter(available)
+
+                non_unique_combinations = factor(len(alphabet) - 1)
+                duplicated_combinations = 1
+                for key in duplicates:
+                    duplicated_combinations *= factor(duplicates[key])
 
                 combinations += non_unique_combinations // duplicated_combinations
                 previous = letter
@@ -51,7 +49,7 @@ if __name__ == '__main__':
         'BAAA': 4,
         'QUESTION': 24572,
         'BOOKKEEPER': 10743,
-        'IMMUNOELECTROPHORETICALLY': 718393983731145698173,
+        'IMMUNOELECTROPHORETICALLY' * 100: 718393983731145698173,
         'DCCBBAA': 630,
         'TOFFEE': 180,
     }
