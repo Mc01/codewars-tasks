@@ -7,6 +7,7 @@ from anagram import listPosition as MarcinAnagram
 from anagram_akcelero import listPosition as AkceleroAnagram
 from anagram_ania import listPosition as AniaAnagram
 from anagram_magda import listPosition as MagdaAnagram
+from anagram_piter import listPosition as PiterAnagram
 from anagram_radek import listPosition as RadekAnagram
 
 
@@ -18,7 +19,7 @@ players = {
     # "Janek": JanekAnagram,
     "Magda": MagdaAnagram,
     # "Michal": MichalAnagram,
-    # "Piter": PiterAnagram,
+    "Piter": PiterAnagram,
     "Radek": RadekAnagram,
 }
 
