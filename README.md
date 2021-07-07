@@ -1,13 +1,17 @@
 # CodeWars Tasks
 :bow_and_arrow: CodeWars tasks for team challenges
 
+## Content
+
 Following tasks are available now
 - `anagram`
 - `lift`
 - `morse`
 - `papers`
 
-Credits to Dream Team:
+## Contributors
+
+Credits to the Dream Team:
 - [Ania Rudzińska](https://github.com/arudzinska)
 - [Radek Kowalski](https://github.com/radekwlsk)
 - [Michał Karaś](https://github.com/mkaras93)
