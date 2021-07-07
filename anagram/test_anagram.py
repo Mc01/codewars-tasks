@@ -4,6 +4,7 @@ from random import randint, choice
 from string import ascii_letters, digits
 
 from anagram import listPosition as MarcinAnagram
+from anagram_magda import listPosition as MagdaAnagram
 
 
 # players
@@ -12,7 +13,7 @@ players = {
     # "Akcelero": AkceleroAnagram,
     # "Ania": AniaAnagram,
     # "Janek": JanekAnagram,
-    # "Magda": MagdaAnagram,
+    "Magda": MagdaAnagram,
     # "Michal": MichalAnagram,
     # "Piter": PiterAnagram,
     # "Radek": RadekAnagram,
