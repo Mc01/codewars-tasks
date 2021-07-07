@@ -6,6 +6,7 @@ from string import ascii_letters, digits
 from anagram import listPosition as MarcinAnagram
 from anagram_akcelero import listPosition as AkceleroAnagram
 from anagram_ania import listPosition as AniaAnagram
+from anagram_magda import listPosition as MagdaAnagram
 from anagram_radek import listPosition as RadekAnagram
 
 
@@ -15,7 +16,7 @@ players = {
     "Akcelero": AkceleroAnagram,
     "Ania": AniaAnagram,
     # "Janek": JanekAnagram,
-    # "Magda": MagdaAnagram,
+    "Magda": MagdaAnagram,
     # "Michal": MichalAnagram,
     # "Piter": PiterAnagram,
     "Radek": RadekAnagram,
