@@ -1,5 +1,5 @@
 from collections import Counter
-from math import factorial, prod
+from math import factorial
 
 
 factor_cache = {}
